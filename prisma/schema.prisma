@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model chat{
+  id Int @id @default(autoincrement())
+  pdfName String @map("pdf_name")
+  pdfUrl String @map("pdf_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  userId String @map("user_id")
+  fileKey String @map("file_key")
+  messages message[]
+}
+
+model message{
+  id Int @id @default(autoincrement())
+  chatId chat @relation(fields: [chat_id], references: [id])
+  chat_id Int
+  content String 
+  createdAt DateTime @default(now()) @map("created_at")
+  role Role @default(USER)  
+}
+
+enum Role{
+  USER
+  SYSTEM
+}
+
+model Projects{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  deletedAt DateTime? @default(now()) @map("deleted_at")
+  name String
+  githubUrl String @map("github_url")
+  githubToken String? @map("github_token")
+  userId String @map("user_id")
+}
