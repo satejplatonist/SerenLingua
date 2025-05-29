@@ -26,20 +26,12 @@ async function getEmbeddings(doc: string) {
     // Provide more specific error messages based on error type
     if (err.message.includes("401")) {
       console.error("Authentication failed: Please check your HF_TOKEN")
-      // Fall back to basic embeddings for auth errors
-      // return generateFallbackEmbeddings(doc)
     } else if (err.message.includes("429")) {
       console.error("Rate limit exceeded: Too many requests to Hugging Face API")
-      // Fall back to basic embeddings for rate limit errors
-      // return generateFallbackEmbeddings(doc)
     } else if (err.message.includes("timeout") || err.name === "AbortError") {
       console.error("Request timed out: Hugging Face API took too long to respond")
-      // Fall back to basic embeddings for timeout errors
-      // return generateFallbackEmbeddings(doc)
     } else {
-      // For other errors, try the fallback
       console.error(`Embedding failed: ${err.message}, using fallback embeddings`)
-      // return generateFallbackEmbeddings(doc)
     }
     throw new Error(`Embedding failed: ${err.message}`);
   }
